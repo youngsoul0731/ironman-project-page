@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IronMan: Information-Constrained Video-Action Learning for Robot Manipulation</title>
+  <meta name="description" content="IronMan is a robust video-action learning framework built on the information bottleneck principle, achieving strong in-distribution performance and out-of-distribution robustness for robot manipulation.">
+  <meta property="og:title" content="IronMan: Information-Constrained Video-Action Learning for Robot Manipulation">
+  <meta property="og:description" content="A robust video-action learning framework built on the information bottleneck principle.">
+  <meta name="theme-color" content="#982b32">
+  <link rel="icon" type="image/png" href="static/images/icon.png">
+  <link rel="apple-touch-icon" href="static/images/icon.png">
+  <link rel="stylesheet" href="static/css/style.css?v=3">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a class="wordmark" href="#top"><img class="brand-icon" src="static/images/icon.png" alt="" width="30" height="30">IronMan</a>
+    <div class="nav-links"><a href="#method">Method</a><a href="#sim-results">Results</a><a href="#real-world">Demos</a><a href="#bibtex">Citation</a></div>
+  </div>
+</nav>
+
+<!-- ======================== HERO ======================== -->
+<header class="hero" id="top">
+  <div class="container">
+    <p class="eyebrow">Preprint 2026</p>
+    <h1><span class="hero-name">IronMan</span><span class="hero-title">Information-Constrained Video-Action<br class="desktop-break"> Learning for Robot Manipulation</span></h1>
+    <p class="subtitle">Less is more.</p>
+    <div class="authors">
+      <span>Yuanshuo Zhang<sup>1</sup></span><span>Wenzhe Zhao<sup>2</sup></span><span>Zixing Lei<sup>1</sup></span><span>Bin Chen<sup>2</sup></span><span>Siheng Chen<sup>1*</sup></span>
+    </div>
+    <p class="affil"><span><sup>1</sup> Shanghai Jiao Tong University</span><span><sup>2</sup> Joy Future Academy, JD</span></p>
+    <p class="note"><sup>*</sup> Corresponding author</p>
+    <div class="btn-row">
+      <!-- TODO: replace href="#" with the real arXiv link once the paper is public -->
+      <a class="btn" href="#" title="arXiv link coming soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2v5h5v11H6V4h7zM8 12h8v2H8zm0 4h6v2H8z"/></svg>arXiv</a>
+      <a class="btn" href="https://github.com/youngsoul0731/IronMan" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>Code</a>
+      <a class="btn" href="#demos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5z"/></svg>Watch demos</a>
+      <a class="btn" href="#bibtex"><span class="quote-icon" aria-hidden="true">“</span>BibTeX</a>
+    </div>
+    <div class="metrics" aria-label="Key experimental results">
+      <div><strong>99.0<span>%</span></strong><span>LIBERO success rate</span></div>
+      <div><strong>79.1<span>%</span></strong><span>LIBERO-Plus success rate</span></div>
+      <div><strong>79.4<span>%</span></strong><span>RoboTwin clean2clean success rate</span></div>
+      <div><strong>12.1<span>%</span></strong><span>RoboTwin clean2random success rate</span></div>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<section id="abstract">
+  <div class="container narrow">
+    <h2>Abstract</h2>
+    <p>
+      Video Action Models (VAMs) couple visual dynamics modeling with action generation for robot manipulation.
+      However, video representations are not naturally suited to action generation, as exposing the action policy
+      to excessive visual detail can impair its generalization ability. Therefore, we introduce
+      <strong class="accent">IronMan</strong> (<b>I</b>nformation-const<b>R</b>ained vide<b>O</b>-actio<b>N</b>
+      learning for robot <b>MAN</b>ipulation), a robust video-action learning framework built on the
+      <b>information bottleneck</b> principle. The core principle of this framework is to impose information
+      constraints that suppress irrelevant visual information while preserving action-relevant dynamics cues.
+      IronMan employs a <b>dynamics-aware bottleneck</b> that distills noisy, entangled one-step video features
+      into compact world representations. Extensive simulation and real-world experiments demonstrate strong
+      in-distribution (ID) performance and out-of-distribution (OOD) robustness while maintaining efficient inference.
+      IronMan achieves success rates of <b>99.0%</b> on LIBERO and <b>79.4%</b> on RoboTwin clean2clean,
+      outperforming all the evaluated baselines. Under OOD shifts, IronMan achieves a success rate of
+      <b>79.1%</b> on LIBERO-Plus, exceeding the strongest baseline by <b>10.4</b> percentage points.
+    </p>
+  </div>
+</section>
+
+<section id="method" class="alt">
+  <div class="container">
+    <p class="eyebrow section-number">01 / The method</p><h2>A compact interface from video to action.</h2>
+    <p class="narrow-p">
+      Existing video–action interfaces allow the action policy to freely attend to irrelevant visual signals,
+      increasing its sensitivity to visual details. IronMan instead uses an information-constrained bottleneck
+      designed to retain the predictive dynamics needed for action while suppressing redundancy.
+    </p>
+    <figure class="figure boxed">
+      <a class="figure-link" href="static/images/motivation.png" target="_blank" rel="noopener" aria-label="Open full-size figure: Motivation of IronMan"><img src="static/images/motivation.png" alt="Motivation of IronMan" width="2200" height="942" loading="lazy" decoding="async"></a>
+      <figcaption><b>Motivation.</b> Unlike existing IDM-style Video Action Models that fully denoise future frames
+      (high latency) and expose the policy to redundant features, IronMan extracts one-step video features and
+      distills them into compact, efficient world tokens through a dynamics-aware bottleneck.</figcaption>
+    </figure>
+
+    <figure class="figure boxed">
+      <a class="figure-link" href="static/images/model_arch.png" target="_blank" rel="noopener" aria-label="Open full-size figure: IronMan architecture overview"><img src="static/images/model_arch.png" alt="IronMan architecture overview" width="2200" height="941" loading="lazy" decoding="async"></a>
+      <figcaption><b>Overview of IronMan.</b> A <b>Video DiT</b> (initialized from Wan2.2-5B) models visual dynamics and
+      provides one-step video features. The <b>dynamics-aware bottleneck</b> aggregates these features with a
+      spatio-temporal transformer (spatial cross-attention + temporal self-attention) and maps them through a
+      Gaussian head to a latent distribution, yielding compact <b>world tokens</b>. The <b>Action DiT</b> attends to world
+      tokens and robot state tokens to generate action chunks via flow matching. Video decoding is optional and
+      inactive during action inference. Training combines video and action flow-matching losses with a variational
+      information bottleneck (KL) regularization on the world-token distribution.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="sim-results">
+  <div class="container">
+    <p class="eyebrow section-number">02 / The evidence</p><h2>Strong ID performance and OOD robustness.</h2>
+
+    <h3>In-Domain: LIBERO &amp; RoboTwin clean2clean</h3>
+    <div class="table-wrap" role="region" aria-label="Experimental results table; scroll horizontally for all columns" tabindex="0">
+      <table class="results">
+        <thead>
+          <tr><th scope="col">Model</th><th scope="col">Em. PT.</th><th scope="col">Spatial</th><th scope="col">Object</th><th scope="col">Goal</th><th scope="col">Long</th><th scope="col">LIBERO Avg.</th><th scope="col">RoboTwin c2c</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>π<sub>0.5</sub></td><td>✓</td><td class="second">98.8</td><td>98.2</td><td>98.0</td><td>92.4</td><td>96.9</td><td>70.7</td></tr>
+          <tr><td>X-VLA</td><td>✓</td><td>98.2</td><td>98.6</td><td>97.8</td><td>97.6</td><td>98.1</td><td>68.0</td></tr>
+          <tr><td>Abot-M0</td><td>✓</td><td class="second">98.8</td><td class="second">99.8</td><td class="best">99.0</td><td>96.6</td><td class="second">98.6</td><td>57.4</td></tr>
+          <tr><td>starVLA</td><td>✗</td><td>98.7</td><td>99.7</td><td class="second">98.6</td><td>94.2</td><td>97.8</td><td>46.5</td></tr>
+          <tr><td>FastWAM</td><td>✗</td><td>98.2</td><td class="best">100.0</td><td>97.0</td><td>95.2</td><td>97.6</td><td class="second">77.8</td></tr>
+          <tr><td>LingBot-VA</td><td>✓</td><td>98.5</td><td>99.6</td><td>97.2</td><td class="second">98.5</td><td>98.5</td><td>–</td></tr>
+          <tr><td>Motus</td><td>✓</td><td>96.8</td><td class="second">99.8</td><td>96.6</td><td>97.6</td><td>97.7</td><td>–</td></tr>
+          <tr class="ours"><td>IronMan (ours)</td><td>✗</td><td class="best">99.0</td><td class="best">100.0</td><td>97.8</td><td class="best">99.0</td><td class="best">99.0</td><td class="best">79.4</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption">In-domain success rates (%). <b>Bold</b> = best, <u>underline</u> = second best.
+    Em. PT. denotes embodied pretraining. Without embodied pretraining, IronMan achieves the highest LIBERO
+    average (99.0%) — including 99.0% on long-horizon LIBERO-Long — and 79.4% on RoboTwin clean2clean.</p>
+
+    <h3>Out-of-Distribution: LIBERO-Plus &amp; RoboTwin clean2random</h3>
+    <div class="table-wrap" role="region" aria-label="Experimental results table; scroll horizontally for all columns" tabindex="0">
+      <table class="results">
+        <thead>
+          <tr><th scope="col">Model</th><th scope="col">Camera</th><th scope="col">Robot</th><th scope="col">Language</th><th scope="col">Light</th><th scope="col">Background</th><th scope="col">Noise</th><th scope="col">Layout</th><th scope="col">Overall</th><th scope="col">RoboTwin c2r</th><th scope="col">Latency (ms)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>DiT4DiT</td><td class="second">59.7</td><td>61.1</td><td>88.4</td><td>90.8</td><td>33.7</td><td class="second">60.0</td><td class="second">83.6</td><td class="second">68.7</td><td>–</td><td>180</td></tr>
+          <tr><td>FastWAM</td><td>16.8</td><td>43.7</td><td>68.1</td><td>77.2</td><td>51.5</td><td>36.5</td><td>59.5</td><td>49.2</td><td>1.9</td><td>190</td></tr>
+          <tr><td>FastWAM-Joint</td><td>41.3</td><td>65.5</td><td class="second">91.0</td><td>86.4</td><td>53.8</td><td>56.2</td><td>79.2</td><td>67.4</td><td>5.2</td><td>580</td></tr>
+          <tr><td>FastWAM-IDM</td><td>37.7</td><td class="second">67.2</td><td>90.3</td><td class="second">92.7</td><td class="second">54.2</td><td>56.6</td><td>79.2</td><td>67.9</td><td>9.3</td><td>810</td></tr>
+          <tr><td>OpenWAM-Joint</td><td>1.2</td><td>53.4</td><td>71.1</td><td>77.3</td><td>43.8</td><td>18.4</td><td>52.2</td><td>43.7</td><td class="best">13.2</td><td>429</td></tr>
+          <tr class="ours"><td>IronMan (ours)</td><td class="best">64.4</td><td class="best">75.9</td><td class="best">92.7</td><td class="best">93.4</td><td class="best">64.4</td><td class="best">78.3</td><td class="best">83.7</td><td class="best">79.1</td><td class="second">12.1</td><td>200</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption">OOD success rates (%) on LIBERO-Plus (seven perturbation categories) and RoboTwin
+    clean2random, with inference latency measured on an NVIDIA RTX 5090. IronMan ranks first across all seven
+    perturbation categories, surpassing the strongest baseline by <b>10.4 percentage points</b> overall, with the largest gains on
+    sensor noise (<b>+18.3 pp</b>) and background textures (<b>+10.2 pp</b>) — while keeping latency comparable to the
+    fastest baselines.</p>
+
+    <details class="analysis-details"><summary>Bottleneck analysis &amp; attention visualizations</summary>
+    <h3>Bottleneck Mechanism Analysis</h3>
+    <div class="fig-row">
+      <figure class="figure boxed">
+        <a class="figure-link" href="static/images/bottleneck_capacity.png" target="_blank" rel="noopener" aria-label="Open full-size figure: Bottleneck size analysis"><img src="static/images/bottleneck_capacity.png" alt="Bottleneck size analysis" width="1079" height="788" loading="lazy" decoding="async"></a>
+        <figcaption><b>Bottleneck size Q×D.</b> Smaller bottlenecks limit representation capacity; larger ones expose
+        the action head to excessive irrelevant details.</figcaption>
+      </figure>
+      <figure class="figure boxed">
+        <a class="figure-link" href="static/images/ib_beta_sweep.png" target="_blank" rel="noopener" aria-label="Open full-size figure: Constraint strength analysis"><img src="static/images/ib_beta_sweep.png" alt="Constraint strength analysis" width="1079" height="788" loading="lazy" decoding="async"></a>
+        <figcaption><b>Constraint strength β.</b> Intermediate β performs best: weak constraints let irrelevant
+        information pass; overly strong constraints discard control-relevant cues.</figcaption>
+      </figure>
+    </div>
+
+    <h3>Attention Visualization</h3>
+    <figure class="figure boxed">
+      <a class="figure-link" href="static/images/attn_vis_ketchup.png" target="_blank" rel="noopener" aria-label="Open full-size figure: Attention heatmap comparison — ketchup task"><img src="static/images/attn_vis_ketchup.png" alt="Attention heatmap comparison — ketchup task" width="2400" height="1290" loading="lazy" decoding="async"></a>
+      <a class="figure-link" href="static/images/attn_vis_moka.png" target="_blank" rel="noopener" aria-label="Open full-size figure: Attention heatmap comparison — moka pot task" style="margin-top:14px"><img src="static/images/attn_vis_moka.png" alt="Attention heatmap comparison — moka pot task" width="2400" height="1290" loading="lazy" decoding="async"></a>
+      <figcaption><b>Attention heatmaps under a background shift</b> from LIBERO (ID) to LIBERO-Plus (OOD).
+      IronMan focuses selectively on the gripper–object interaction region, whereas the baseline without the
+      dynamics-aware bottleneck also attends broadly to task-irrelevant backgrounds — and fails.</figcaption>
+    </figure>
+    </details>
+  </div>
+</section>
+
+<section id="real-world" class="alt">
+  <div class="container">
+    <p class="eyebrow section-number">03 / In the real world</p><h2>Robustness in the real world</h2>
+    <p>
+      We evaluate IronMan on three real-world tasks across the <b>AGIBOT G2</b> and <b>ROBOTERA M7</b> platforms —
+      <i>insert flowers</i>, <i>arrange fruits</i>, and <i>organize parcels</i> — testing spatial perception,
+      fine-grained manipulation, and long-horizon execution. We collect 100 demonstrations per task and evaluate 10 trials per task and setting. Each task is evaluated under three settings:
+      <b>ID</b> (training distribution), <b>Background</b> (strong tabletop texture distractions), and
+      <b>Layout</b> (shifted object positions and orientations).
+    </p>
+
+    <figure class="figure boxed">
+      <a class="figure-link" href="static/images/real_world_exp.png" target="_blank" rel="noopener" aria-label="Open full-size figure: Real-world performance"><img src="static/images/real_world_exp.png" alt="Real-world performance" width="1800" height="1151" loading="lazy" decoding="async"></a>
+      <figcaption><b>Real-world performance</b> under ID, Background, and Layout settings. IronMan achieves the
+      highest average normalized score under ID (91.11) and Layout (66.11), and scores 56.67 under Background shifts, ahead of FastWAM (6.39) and below π<sub>0.5</sub> (68.61). These are normalized task scores, not success rates.</figcaption>
+    </figure>
+
+    <div class="teaser-bottom" id="demos"><p>Real-world rollouts on AGIBOT G2 and ROBOTERA M7. Videos autoplay muted.</p><button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false">Pause videos</button></div>
+
+    <div class="tabs" data-group="rw">
+      <button class="tab-btn active" data-tab="rw-id">ID</button>
+      <button class="tab-btn" data-tab="rw-bg">Background shift</button>
+      <button class="tab-btn" data-tab="rw-layout">Layout shift</button>
+    </div>
+
+    <div class="tab-panel active" data-group="rw" data-tab="rw-id">
+      <div class="video-grid cols-3">
+        <div class="video-card"><video data-src="static/videos/rw_flowers_id_1.mp4?v=3" muted loop playsinline preload="none" controls aria-label="rw flowers id 1" poster="static/images/posters/rw_flowers_id_1.jpg?v=3" width="640" height="400"></video><div class="cap"><b>Insert flowers</b> · example 1</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_fruit_id_1.mp4" muted loop playsinline preload="none" controls aria-label="rw fruit id 1" poster="static/images/posters/rw_fruit_id_1.jpg" width="640" height="400"></video><div class="cap"><b>Arrange fruits</b> · example 1</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_parcel_id_1.mp4" muted loop playsinline preload="none" controls aria-label="rw parcel id 1" poster="static/images/posters/rw_parcel_id_1.jpg" width="640" height="480"></video><div class="cap"><b>Organize parcels</b> · example 1</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_flowers_id_2.mp4" muted loop playsinline preload="none" controls aria-label="rw flowers id 2" poster="static/images/posters/rw_flowers_id_2.jpg" width="640" height="400"></video><div class="cap"><b>Insert flowers</b> · example 2</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_fruit_id_2.mp4" muted loop playsinline preload="none" controls aria-label="rw fruit id 2" poster="static/images/posters/rw_fruit_id_2.jpg" width="640" height="400"></video><div class="cap"><b>Arrange fruits</b> · example 2</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_parcel_id_2.mp4" muted loop playsinline preload="none" controls aria-label="rw parcel id 2" poster="static/images/posters/rw_parcel_id_2.jpg" width="640" height="480"></video><div class="cap"><b>Organize parcels</b> · example 2</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-group="rw" data-tab="rw-bg">
+      <div class="video-grid cols-3">
+        <div class="video-card"><video data-src="static/videos/rw_flowers_bg_1.mp4" muted loop playsinline preload="none" controls aria-label="rw flowers bg 1" poster="static/images/posters/rw_flowers_bg_1.jpg" width="640" height="400"></video><div class="cap"><b>Insert flowers</b> · example 1</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_fruit_bg_1.mp4" muted loop playsinline preload="none" controls aria-label="rw fruit bg 1" poster="static/images/posters/rw_fruit_bg_1.jpg" width="640" height="400"></video><div class="cap"><b>Arrange fruits</b> · example 1</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_parcel_bg_1.mp4" muted loop playsinline preload="none" controls aria-label="rw parcel bg 1" poster="static/images/posters/rw_parcel_bg_1.jpg" width="640" height="480"></video><div class="cap"><b>Organize parcels</b> · example 1</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_flowers_bg_2.mp4" muted loop playsinline preload="none" controls aria-label="rw flowers bg 2" poster="static/images/posters/rw_flowers_bg_2.jpg" width="640" height="400"></video><div class="cap"><b>Insert flowers</b> · example 2</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_fruit_bg_2.mp4" muted loop playsinline preload="none" controls aria-label="rw fruit bg 2" poster="static/images/posters/rw_fruit_bg_2.jpg" width="640" height="400"></video><div class="cap"><b>Arrange fruits</b> · example 2</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_parcel_bg_2.mp4" muted loop playsinline preload="none" controls aria-label="rw parcel bg 2" poster="static/images/posters/rw_parcel_bg_2.jpg" width="640" height="480"></video><div class="cap"><b>Organize parcels</b> · example 2</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-group="rw" data-tab="rw-layout">
+      <div class="video-grid cols-3">
+        <div class="video-card"><video data-src="static/videos/rw_flowers_layout_1.mp4" muted loop playsinline preload="none" controls aria-label="rw flowers layout 1" poster="static/images/posters/rw_flowers_layout_1.jpg" width="640" height="400"></video><div class="cap"><b>Insert flowers</b> · example 1</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_fruit_layout_1.mp4" muted loop playsinline preload="none" controls aria-label="rw fruit layout 1" poster="static/images/posters/rw_fruit_layout_1.jpg" width="640" height="400"></video><div class="cap"><b>Arrange fruits</b> · example 1</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_parcel_layout_1.mp4" muted loop playsinline preload="none" controls aria-label="rw parcel layout 1" poster="static/images/posters/rw_parcel_layout_1.jpg" width="640" height="480"></video><div class="cap"><b>Organize parcels</b> · example 1</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_flowers_layout_2.mp4" muted loop playsinline preload="none" controls aria-label="rw flowers layout 2" poster="static/images/posters/rw_flowers_layout_2.jpg" width="640" height="400"></video><div class="cap"><b>Insert flowers</b> · example 2</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_fruit_layout_2.mp4" muted loop playsinline preload="none" controls aria-label="rw fruit layout 2" poster="static/images/posters/rw_fruit_layout_2.jpg" width="640" height="400"></video><div class="cap"><b>Arrange fruits</b> · example 2</div></div>
+        <div class="video-card"><video data-src="static/videos/rw_parcel_layout_2.mp4" muted loop playsinline preload="none" controls aria-label="rw parcel layout 2" poster="static/images/posters/rw_parcel_layout_2.jpg" width="640" height="480"></video><div class="cap"><b>Organize parcels</b> · example 2</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="sim-demos">
+  <div class="container">
+    <p class="eyebrow section-number">04 / In simulation</p><h2>Attention heatmap.</h2>
+    <p>Rollouts under <b>background shifts</b> on LIBERO-Plus. In each video, the <b>left panel</b> shows
+    IronMan and the <b>right panel</b> shows the baseline without the
+    dynamics-aware bottleneck. The attention heatmap video on the right visualizes where each policy attends. These are selected qualitative examples; aggregate results are reported in the section above. After IronMan succeeds, its final frame is held while the baseline continues to its step limit.</p>
+
+    <div class="tabs" data-group="sim">
+      <button class="tab-btn active" data-tab="sim1">Ketchup → basket</button>
+      <button class="tab-btn" data-tab="sim2">Alphabet soup → basket</button>
+      <button class="tab-btn" data-tab="sim3">Mug → microwave</button>
+      <button class="tab-btn" data-tab="sim4">Stove + moka pot</button>
+    </div>
+
+    <div class="tab-panel active" data-group="sim" data-tab="sim1">
+      <div class="video-grid cols-2">
+        <div class="video-card"><video data-src="static/videos/sim_task137_rollout.mp4?v=2" muted loop playsinline preload="none" controls aria-label="sim task137 rollout" poster="static/images/posters/sim_task137_rollout.jpg?v=2" width="512" height="256"></video><div class="cap"><b>Rollout</b> · left: <b style="color:var(--accent)">IronMan — success</b>, right: baseline w/o bottleneck — failure</div></div>
+        <div class="video-card"><video data-src="static/videos/sim_task137_attention.mp4?v=2" muted loop playsinline preload="none" controls aria-label="sim task137 attention" poster="static/images/posters/sim_task137_attention.jpg?v=2" width="448" height="224"></video><div class="cap"><b>Attention heatmap</b> · left: IronMan, right: baseline</div></div>
+      </div>
+      <p class="table-caption">“Pick up the ketchup and place it in the basket” (LIBERO-Object, background shift).</p>
+    </div>
+    <div class="tab-panel" data-group="sim" data-tab="sim2">
+      <div class="video-grid cols-2">
+        <div class="video-card"><video data-src="static/videos/sim_task1_rollout.mp4?v=2" muted loop playsinline preload="none" controls aria-label="sim task1 rollout" poster="static/images/posters/sim_task1_rollout.jpg?v=2" width="512" height="256"></video><div class="cap"><b>Rollout</b> · left: <b style="color:var(--accent)">IronMan — success</b>, right: baseline w/o bottleneck — failure</div></div>
+        <div class="video-card"><video data-src="static/videos/sim_task1_attention.mp4?v=2" muted loop playsinline preload="none" controls aria-label="sim task1 attention" poster="static/images/posters/sim_task1_attention.jpg?v=2" width="448" height="224"></video><div class="cap"><b>Attention heatmap</b> · left: IronMan, right: baseline</div></div>
+      </div>
+      <p class="table-caption">“Pick up the alphabet soup and place it in the basket” (LIBERO-Object, background shift).</p>
+    </div>
+    <div class="tab-panel" data-group="sim" data-tab="sim3">
+      <div class="video-grid cols-2">
+        <div class="video-card"><video data-src="static/videos/sim_task103_rollout.mp4?v=2" muted loop playsinline preload="none" controls aria-label="sim task103 rollout" poster="static/images/posters/sim_task103_rollout.jpg?v=2" width="512" height="256"></video><div class="cap"><b>Rollout</b> · left: <b style="color:var(--accent)">IronMan — success</b>, right: baseline w/o bottleneck — failure</div></div>
+        <div class="video-card"><video data-src="static/videos/sim_task103_attention.mp4?v=2" muted loop playsinline preload="none" controls aria-label="sim task103 attention" poster="static/images/posters/sim_task103_attention.jpg?v=2" width="448" height="224"></video><div class="cap"><b>Attention heatmap</b> · left: IronMan, right: baseline</div></div>
+      </div>
+      <p class="table-caption">“Put the yellow and white mug in the microwave and close it” (LIBERO-10, background shift).</p>
+    </div>
+    <div class="tab-panel" data-group="sim" data-tab="sim4">
+      <div class="video-grid cols-2">
+        <div class="video-card"><video data-src="static/videos/sim_task31_rollout.mp4?v=2" muted loop playsinline preload="none" controls aria-label="sim task31 rollout" poster="static/images/posters/sim_task31_rollout.jpg?v=2" width="512" height="256"></video><div class="cap"><b>Rollout</b> · left: <b style="color:var(--accent)">IronMan — success</b>, right: baseline w/o bottleneck — failure</div></div>
+        <div class="video-card"><video data-src="static/videos/sim_task31_attention.mp4?v=2" muted loop playsinline preload="none" controls aria-label="sim task31 attention" poster="static/images/posters/sim_task31_attention.jpg?v=2" width="448" height="224"></video><div class="cap"><b>Attention heatmap</b> · left: IronMan, right: baseline</div></div>
+      </div>
+      <p class="table-caption">“Turn on the stove and put the moka pot on it” (LIBERO-10, background shift).</p>
+    </div>
+  </div>
+</section>
+
+<section id="bibtex" class="alt">
+  <div class="container narrow">
+    <p class="eyebrow section-number">05 / Reference</p><h2>Cite this work</h2><p class="muted">If you find IronMan useful for your research, please consider citing our work.</p>
+    <div class="citation-actions"><a href="static/ironman.bib" download>Download .bib</a><button class="copy-btn" id="copy-bibtex" type="button">Copy BibTeX</button><span class="sr-only" id="copy-status" role="status"></span></div><pre class="bibtex"><code id="bibtex-text">@misc{zhang2026ironman,
+  title   = {IronMan: Information-Constrained Video-Action Learning for Robot Manipulation},
+  author  = {Zhang, Yuanshuo and Zhao, Wenzhe and Lei, Zixing and Chen, Bin and Chen, Siheng},
+  note    = {Preprint},
+  year    = {2026}
+}</code></pre>
+  </div>
+</section>
+</main>
+
+
+<footer>
+  <div class="container">
+    <p><a class="footer-brand" href="#top">IronMan</a> <span>Information-Constrained Video-Action Learning for Robot Manipulation</span></p><p class="footer-credit">Academic page layout inspired by <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a>.</p>
+  </div>
+</footer>
+
+<script src="static/js/index.js"></script>
+</body>
+</html>
