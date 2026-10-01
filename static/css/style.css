@@ -18,5 +18,4 @@ section{padding:76px 0}section.alt{background:var(--bg-alt)}.section-number{marg
 .hero .subtitle{font-size:32px}
 @media(max-width:760px){.hero .eyebrow{font-size:16px}.hero .subtitle{font-size:25px}}
 #sim-demos .video-card video{aspect-ratio:2/1}
-.authors a{color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-color:#c89095}
-.authors a:hover{color:var(--accent)}
+.authors a{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
